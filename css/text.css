@@ -1,0 +1,19 @@
+div.blog_text_container {
+    height: 10em;
+    position: relative
+}
+
+div.blog_text_container p {
+    margin: 0;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+a {
+  color: DodgerBlue;
+  text-decoration: none;
+}
