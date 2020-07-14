@@ -4,7 +4,7 @@ div.blog_text_container {
 }
 
 div.blog_text_container p {
-    width: 80%;
+    width: 70%;
     margin: auto;
     align-items:center;
     justify-content:center;
@@ -28,4 +28,35 @@ figure {
 
 figcaption {
   padding-bottom: 20px
+}
+
+.collapsible {
+  margin-top: 20px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #999;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 70%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+  width: 70%;
 }

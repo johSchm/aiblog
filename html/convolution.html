@@ -30,16 +30,28 @@
   <section>
     <h1>CONVOLUTION</h1>
     <div class=blog_text_container>
-
       <p class='big'>
         A first step to deeply understand
         <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>
         is to unterstand what these networks have to do with <i> Convolutions </i>.
-				Actually, what is a convolution in the first place?
-				To answer this question, lets consider two distinct signals. Lets call them \( f(t) \) and \( g(t) \).
+				Actually, what are convolutions in the first place?
+				To answer this question, lets consider two distinct functions,
+				lets call them \( f(t) \) and \( g(t) \).
+				Further, to introduce the most popular terminology right at the beginning,
+				lets call \( f(t) \) the signal and \( g(t) \) the filter or kernel.
 				Since we are talking about signals, the most natural way to represent these functions,
 				is by dependence of the time \( t \).
 			</p>
+
+			<button type="button" class="collapsible">TL;DR</button>
+			<div class="content">
+				<p class='big'>
+					Convolution is a mathematical operation, which does not necessarily
+					require time-depending functions,
+					we will see that in the
+					<a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>.
+				</p>
+			</div>
 
 			<figure>
 			 <img
@@ -95,4 +107,5 @@
 			</p>
 		</div>
   </section>
+	<script src="../js/collapsible_animation.js"></script>
 </body>
