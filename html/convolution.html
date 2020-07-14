@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+
+<!-- LOAD THE MATHJAX LIBRARY -->
+<!-- DOCS: https://docs.mathjax.org/en/latest/basic/mathematics.html -->
+<!-- DEMO: https://github.com/mathjax/MathJax-demos-web -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <html lang="en">
 <head>
 	<title></title>
@@ -23,11 +30,69 @@
   <section>
     <h1>CONVOLUTION</h1>
     <div class=blog_text_container>
-      <p>
+
+      <p class='big'>
         A first step to deeply understand
         <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>
-        is understanding the word <i> Convolution </i> in it.
+        is to unterstand what these networks have to do with <i> Convolutions </i>.
+				Actually, what is a convolution in the first place?
+				To answer this question, lets consider two distinct signals. Lets call them \( f(t) \) and \( g(t) \).
+				Since we are talking about signals, the most natural way to represent these functions,
+				is by dependence of the time \( t \).
+			</p>
 
-    </div>
+			<figure>
+			 <img
+			 	src="../figures/articles/convolution/signal_kernel_plot.png"
+			 	alt="Signal and Kernel Plot."
+				style="width:50%">
+			 <figcaption><b>Fig.1 - Signal and kernel plot.</b></figcaption>
+			</figure>
+
+      <p class='big'>
+				It is crusial that both signals are depending on the same variable to performe convolution.
+				\( f,g: [0, \infty) \rightarrow \mathbb{R} \)
+
+				$$ (f * g)(t) \triangleq \int_{-\infty}^{+\infty} f(\tau) g(t - \tau) d \tau, $$
+
+				Note that there are different mathematical notations describing the same process, like
+				\( (f * g)(t) = f(t) * g(t) = f(t) \otimes g(t) \).
+				For the sake of readabiliy and to avoid missunderstandings, espacially mix-ups with the multiplication sign,
+				I will use the latter notation, \( f(t) \otimes g(t) \), in the ensuing scope of this blog.
+
+				If you are working with convolutions, it is significant to know that they follow commutativity, thus
+
+				$$ f(t) \otimes g(t) = g(t) \otimes f(t) $$
+
+				To proof that, we can simply substitute \( t - \tau = \tau^\prime \), such that
+
+				$$ f(t) \otimes g(t) = - \int_{+\infty}^{-\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
+
+				In other words, we are replacing \( \tau \) with \( t - \tau^\prime \), \( t - \tau \) with \( \tau^\prime \),
+				and if there would be a single \( t \) it would get replaced by \( \tau^\prime - \tau \), just to complete
+				the picture.
+				Further, \( d \tau \) got replaced by \( - d \tau^\prime \), since
+
+				$$ \frac{d\tau^\prime}{d\tau} = \frac{d(t - \tau)}{d\tau} \rightarrow d \tau^\prime = - d \tau. $$
+
+				The attentive reader probably also recognized that the limits of the integral have changed, which is due to
+				the reverved sign of the integration. However, since the limits are infinte, the origin shift introduced by the
+				substitution by vector \( t \) does not alter the magnitude of the limits.
+				Hence, we can reverse the order of the limits:
+
+				$$ f(t) \otimes g(t) = \int_{-\infty}^{+\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
+
+				Now, we can swap \( f \) and \( g \) and replace \( \tau^\prime \) by \( \tau \), since this is just a
+				arbitrary variable name, and we will finally end up with:
+
+				$$ f(t) \otimes g(t) = \int_{-\infty}^{+\infty} g(\tau) f(t - \tau) d \tau $$
+
+				used for filter
+				hence f = signal, g = filter or kernel
+				look up discrete conv
+
+				[1](https://www-structmed.cimr.cam.ac.uk/Course/Convolution/convolution.html)
+			</p>
+		</div>
   </section>
 </body>

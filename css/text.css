@@ -4,16 +4,28 @@ div.blog_text_container {
 }
 
 div.blog_text_container p {
-    margin: 0;
-    background: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%)
+    width: 80%;
+    margin: auto;
+    align-items:center;
+    justify-content:center;
+    font-size: 16px
+}
+
+p.big {
+  line-height: 1.8;
+  text-align: justify;
 }
 
 a {
   color: DodgerBlue;
   text-decoration: none;
+}
+
+figure {
+  display: block;
+  text-align: center
+}
+
+figcaption {
+  padding-bottom: 20px
 }
