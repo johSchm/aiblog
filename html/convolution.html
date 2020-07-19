@@ -31,7 +31,7 @@
     <h1>CONVOLUTION</h1>
 		<h2>On how to merge singals.</h2>
     <div class=blog_text_container>
-      <p>
+      <p class=text>
         A first step to deeply understand
         <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>
         is to unterstand what these networks have to do with <i> Convolutions </i>.
@@ -46,7 +46,7 @@
 
 			<button type="button" class="collapsible">TL;DR</button>
 			<div class="content">
-				<p>
+				<p class=collapse>
 					Convolution is a mathematical operation, which does not necessarily
 					require time-depending functions,
 					we will see that in the
@@ -62,7 +62,7 @@
 			 <figcaption><b>Fig.1 - Signal and kernel plot.</b></figcaption>
 			</figure>
 
-      <p>
+      <p class=text>
 				It is crusial that both signals are depending on the same variable to performe convolution.
 				\( f,g: [0, \infty) \rightarrow \mathbb{R} \)
 
@@ -80,7 +80,7 @@
 
 			<button type="button" class="collapsible">Proof</button>
 			<div class="content">
-				<p>
+				<p class=collapse>
 					To proof that, we can simply substitute \( t - \tau = \tau^\prime \), such that
 
 					$$ f(t) \otimes g(t) = - \int_{+\infty}^{-\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
@@ -106,7 +106,7 @@
 				</p>
 			</div>
 
-			<p>
+			<p class=text>
 				This should give you an intuitive introduction to the notion of convolution.
 				Lets stop here and reflect our initial motivation for a momenten. We motivated
 				this topic as an introduction and base line for understanding the functionality of
@@ -118,7 +118,7 @@
 			<ul>
 			 <li>Introduce Discrete Convolution</li>
 			</ul>
-			<p>
+			<p class=text>
 				Now, let us expand our knowlegde about convolution by one further notion:
 				Previously, we have only considered two dimentions, the time \( t \) and the
 				function value \( f(t) \) at this time point. As always in math-carried
