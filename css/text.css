@@ -11,10 +11,42 @@ div.blog_text_container p {
     font-size: 16px
 }
 
-p.big {
+h1 {
+  color: #111;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+h2 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 2px;
+  margin: 0 0 50px;
+  text-align: center;
+}
+
+p {
+  color: #222;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  margin: 0 0 24px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* p.big {
   line-height: 1.8;
   text-align: justify;
-}
+} */
 
 a {
   color: DodgerBlue;
