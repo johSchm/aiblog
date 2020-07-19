@@ -3,17 +3,62 @@ div.blog_text_container {
     position: relative
 }
 
-div.blog_text_container p {
-    width: 80%;
+/* div.blog_text_container p {
+    width: 70%;
     margin: auto;
     align-items:center;
     justify-content:center;
     font-size: 16px
+} */
+
+h1 {
+  color: #111;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  padding: 0;
+  margin: 0;
 }
 
-p.big {
-  line-height: 1.8;
+h2 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 2px;
+  margin: 0 0 50px;
+  text-align: center;
+}
+
+p.text {
+  color: #222;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  margin: auto;
   text-align: justify;
+  text-justify: inter-word;
+  justify-content:center;
+  align-items:center;
+  width: 70%;
+}
+
+p.collapse {
+  color: #222;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+  text-align: justify;
+  text-justify: inter-word;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
 }
 
 a {
@@ -28,4 +73,35 @@ figure {
 
 figcaption {
   padding-bottom: 20px
+}
+
+.collapsible {
+  margin-top: 25px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #128caa;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  width: 70%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #0d7089;
+}
+
+.content {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+  width: 70%;
 }

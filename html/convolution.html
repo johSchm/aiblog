@@ -29,17 +29,30 @@
   </section>
   <section>
     <h1>CONVOLUTION</h1>
+		<h2>On how to merge singals.</h2>
     <div class=blog_text_container>
-
-      <p class='big'>
+      <p class=text>
         A first step to deeply understand
         <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>
         is to unterstand what these networks have to do with <i> Convolutions </i>.
-				Actually, what is a convolution in the first place?
-				To answer this question, lets consider two distinct signals. Lets call them \( f(t) \) and \( g(t) \).
+				Actually, what are convolutions in the first place?
+				To answer this question, lets consider two distinct functions,
+				lets call them \( f(t) \) and \( g(t) \).
+				Further, to introduce the most popular terminology right at the beginning,
+				lets call \( f(t) \) the signal and \( g(t) \) the filter or kernel.
 				Since we are talking about signals, the most natural way to represent these functions,
 				is by dependence of the time \( t \).
 			</p>
+
+			<button type="button" class="collapsible">TL;DR</button>
+			<div class="content">
+				<p class=collapse>
+					Convolution is a mathematical operation, which does not necessarily
+					require time-depending functions,
+					we will see that in the
+					<a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>.
+				</p>
+			</div>
 
 			<figure>
 			 <img
@@ -49,7 +62,7 @@
 			 <figcaption><b>Fig.1 - Signal and kernel plot.</b></figcaption>
 			</figure>
 
-      <p class='big'>
+      <p class=text>
 				It is crusial that both signals are depending on the same variable to performe convolution.
 				\( f,g: [0, \infty) \rightarrow \mathbb{R} \)
 
@@ -63,36 +76,63 @@
 				If you are working with convolutions, it is significant to know that they follow commutativity, thus
 
 				$$ f(t) \otimes g(t) = g(t) \otimes f(t) $$
+			</p>
 
-				To proof that, we can simply substitute \( t - \tau = \tau^\prime \), such that
+			<button type="button" class="collapsible">Proof</button>
+			<div class="content">
+				<p class=collapse>
+					To proof that, we can simply substitute \( t - \tau = \tau^\prime \), such that
 
-				$$ f(t) \otimes g(t) = - \int_{+\infty}^{-\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
+					$$ f(t) \otimes g(t) = - \int_{+\infty}^{-\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
 
-				In other words, we are replacing \( \tau \) with \( t - \tau^\prime \), \( t - \tau \) with \( \tau^\prime \),
-				and if there would be a single \( t \) it would get replaced by \( \tau^\prime - \tau \), just to complete
-				the picture.
-				Further, \( d \tau \) got replaced by \( - d \tau^\prime \), since
+					In other words, we are replacing \( \tau \) with \( t - \tau^\prime \), \( t - \tau \) with \( \tau^\prime \),
+					and if there would be a single \( t \) it would get replaced by \( \tau^\prime - \tau \), just to complete
+					the picture.
+					Further, \( d \tau \) got replaced by \( - d \tau^\prime \), since
 
-				$$ \frac{d\tau^\prime}{d\tau} = \frac{d(t - \tau)}{d\tau} \rightarrow d \tau^\prime = - d \tau. $$
+					$$ \frac{d\tau^\prime}{d\tau} = \frac{d(t - \tau)}{d\tau} \rightarrow d \tau^\prime = - d \tau. $$
 
-				The attentive reader probably also recognized that the limits of the integral have changed, which is due to
-				the reverved sign of the integration. However, since the limits are infinte, the origin shift introduced by the
-				substitution by vector \( t \) does not alter the magnitude of the limits.
-				Hence, we can reverse the order of the limits:
+					The attentive reader probably also recognized that the limits of the integral have changed, which is due to
+					the reverved sign of the integration. However, since the limits are infinte, the origin shift introduced by the
+					substitution by vector \( t \) does not alter the magnitude of the limits.
+					Hence, we can reverse the order of the limits:
 
-				$$ f(t) \otimes g(t) = \int_{-\infty}^{+\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
+					$$ f(t) \otimes g(t) = \int_{-\infty}^{+\infty} f(t - \tau^\prime) g(\tau^\prime) d \tau^\prime. $$
 
-				Now, we can swap \( f \) and \( g \) and replace \( \tau^\prime \) by \( \tau \), since this is just a
-				arbitrary variable name, and we will finally end up with:
+					Now, we can swap \( f \) and \( g \) and replace \( \tau^\prime \) by \( \tau \), since this is just a
+					arbitrary variable name, and we will finally end up with:
 
-				$$ f(t) \otimes g(t) = \int_{-\infty}^{+\infty} g(\tau) f(t - \tau) d \tau $$
+					$$ f(t) \otimes g(t) = \int_{-\infty}^{+\infty} g(\tau) f(t - \tau) d \tau $$
+				</p>
+			</div>
 
-				used for filter
+			<p class=text>
+				This should give you an intuitive introduction to the notion of convolution.
+				Lets stop here and reflect our initial motivation for a momenten. We motivated
+				this topic as an introduction and base line for understanding the functionality of
+				<a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>.
+				These networks, however, work with a special form of convolution, still in the sence
+				of merging two signals together, but in an discretized space rather than a
+				continuouse one, as employed before. This is process is termed discrete convolution.
+			</p>
+			<ul>
+			 <li>Introduce Discrete Convolution</li>
+			</ul>
+			<p class=text>
+				Now, let us expand our knowlegde about convolution by one further notion:
+				Previously, we have only considered two dimentions, the time \( t \) and the
+				function value \( f(t) \) at this time point. As always in math-carried
+				subjects, this can be extanded by further dimensions, introducing the
+				field of multidimensional discrete convolution.
+			</p>
+
+				<!-- used for filter
 				hence f = signal, g = filter or kernel
-				look up discrete conv
+				look up discrete conv -->
 
 				[1](https://www-structmed.cimr.cam.ac.uk/Course/Convolution/convolution.html)
 			</p>
 		</div>
   </section>
+	<script src="../js/collapsible_animation.js"></script>
 </body>
