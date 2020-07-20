@@ -31,6 +31,7 @@
     <h1>CONVOLUTION</h1>
 		<h2>On how to merge singals.</h2>
     <div class=blog_text_container>
+
       <p class=text>
         A first step to deeply understand
         <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a>
@@ -54,13 +55,23 @@
 				</p>
 			</div>
 
-			<figure>
-			 <img
-			 	src="../figures/articles/convolution/signal_kernel_plot.png"
-			 	alt="Signal and Kernel Plot."
-				style="width:50%">
-			 <figcaption><b>Fig.1 - Signal and kernel plot.</b></figcaption>
-			</figure>
+			<iframe
+			src="/dashapp_signal_plot/"
+			class="dash_frame"
+			height="470px">
+			</iframe>
+			<figcaption style="top: -40px;">
+				<b>Fig.1</b> Signal and kernel plot.
+			</figcaption>
+
+			<iframe
+			src="/dashapp_convolution/"
+			class="dash_frame"
+			height="530px">
+			</iframe>
+			<figcaption style="top: -70px;">
+				<b>Fig.2</b> Convolution animation.
+			</figcaption>
 
       <p class=text>
 				It is crusial that both signals are depending on the same variable to performe convolution.

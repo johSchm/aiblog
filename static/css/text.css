@@ -66,13 +66,26 @@ a {
   text-decoration: none;
 }
 
+.dash_frame {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75%;
+  border: 0;
+  overflow: hidden;
+}
+
 figure {
   display: block;
   text-align: center
 }
 
 figcaption {
-  padding-bottom: 20px
+  position: relative;
+  bottom: 20px;
+  top: -50px;
+  text-align: center;
+  font-size: 15px;
 }
 
 .collapsible {
