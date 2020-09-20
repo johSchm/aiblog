@@ -5,7 +5,11 @@ import pandas as pd
 import plotly.express as px
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
+
+timespan = np.linspace(0, 8, 100)
 
 def f(x: float) -> float:
     if x >= 1.0 and x < 1.5:
@@ -16,152 +20,91 @@ def f(x: float) -> float:
         return -2 * x + 10.0
     return 0.0
 
-def g(x: float) -> float:
-    if x >= -5.0 and x < -4.5:
-        return 2 * x + 10
-    elif x >= -4.5 and x < -1.5:
-        return 1
-    elif x >= -1.5 and x < -1.0:
-        return -2 * x - 2.0
-    return 0.0
+def gen_noise(lower_limit=-0.1, upper_limit=0.1) -> float:
+    return np.random.normal(lower_limit,upper_limit,1)[0]
 
-def gaussian(x, mu, sig):
-    return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
-
-center_f = 3
-center_g = -3
-timespan = np.linspace(-10, 10, 200)
+def hamming_window(x,window_len=10):
+    s = np.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
+    w = np.hamming(window_len)
+    y = np.convolve(w/w.sum(),s,mode='valid')
+    return y[:len(timespan)]
 
 
-def signal_kernel_dashboard(server):
+signal = [f(t) for t in timespan]
+noise = [gen_noise() for t in timespan]
+noisy_signal = [s + n for s,n in zip(signal, noise)]
+conv_window = hamming_window(noisy_signal, window_len=15)
+hamming_filter = np.hamming(len(timespan))
+
+
+def hamming_convolution_dashboard(server):
     """Create a Plotly Dash dashboard."""
 
-    df = pd.DataFrame(dict(t=timespan,
-                           signal=[f(t) for t in timespan],
-                           kernel=[gaussian(t, -3, 1.0) for t in timespan]))
+    fig = make_subplots(rows=1, cols=2, start_cell="bottom-left")
 
-    fig = px.line(df, x='t', y=['signal', 'kernel'])
+    fig.add_trace(go.Scatter(x=timespan, y=hamming_filter),
+                  row=1, col=1)
 
-    # app.run_server(mode='inline')
+    fig.add_trace(go.Scatter(x=timespan, y=conv_window),
+                  row=1, col=2)
+                  
+    fig.add_trace(go.Scatter(x=timespan, y=noisy_signal),
+                  row=1, col=2)
+
+    fig.update_layout(showlegend=False,
+                      xaxis_title="",
+                      yaxis_title="",
+                      margin=dict(l=0, r=0, t=35, b=35))
 
     dash_app = Dash(
         server=server,
-        routes_pathname_prefix='/dashapp_signal_plot/'#,
-        # external_stylesheets=[
-        #     '/static/dist/css/styles.css',
-        # ]
+        routes_pathname_prefix='/dashapp_conv/'
+        # external_stylesheets=['../static/css/dash_table.css']
     )
 
     # Create Dash Layout
     dash_app.layout = html.Div([
-        dcc.Graph(id = 'signal_kernel_plot', figure = fig),
-    ])
-    return dash_app.server
-
-
-slider_smooth = 5
-timespan_range_len = (abs(min(timespan)) + max(timespan))
-
-c_total = np.convolve([f(t) for t in timespan],  # fixed
-                      [g(t) for t in timespan])  # sliding
-c_total /= sum([g(t) for t in timespan])
-c_limit = int((abs(min(timespan)) + center_g) * (len(timespan) / timespan_range_len))
-c_total = c_total[c_limit:c_limit+len(timespan)]
-
-
-def convolution_dashboard(server):
-    """Create a Plotly Dash dashboard."""
-
-    timespan = np.linspace(-10, 10, 200)
-    df = pd.DataFrame(dict(t=timespan,
-                           signal=[f(t) for t in timespan],
-                           kernel=[gaussian(t, -3, 1.0) for t in timespan]))
-
-    fig = px.line(df, x='t', y=['signal', 'kernel'])
-
-    # app.run_server(mode='inline')
-
-    dash_app = Dash(
-        server=server,
-        routes_pathname_prefix='/dashapp_convolution/'#,
-        # external_stylesheets=[
-        #     '/static/dist/css/styles.css',
-        # ]
-    )
-
-    # Create Dash Layout
-    dash_app.layout = html.Div([
-
-        dcc.Graph(id = 'conv_plot'),
-
         html.Div([
-            html.Div([
-                dcc.Slider(id = 'time_slider',
-                           step = timespan_range_len / len(timespan),
-                           min = min(timespan),
-                           max = max(timespan),
-                           value = center_g)],
-                style={
-                    'width': '80%',
-                    'position': 'relative',
-                    'padding': '0px 0px 0px 50px',
-                    'top': '-35px',
-                },
-            ),
-            html.Div([
-                html.Button('PLAY',
-                            id='play_btn',
-                            n_clicks=0)],
-                style={
-                    'position': 'relative',
-                    'top': '-80px',
-                },
-            )
+            dcc.Graph(id='conv_plot', figure=fig)
         ]),
-
-        dcc.Interval(id='interval_component',
-                     interval=100, # in milliseconds
-                     n_intervals=0)
     ],
     style={'backgroundColor': '#ffffff'},
     )
 
-    def update_graphs(slider_value: float):
-        f_arr = [f(t) for t in timespan]
-        g_arr = [g(t-slider_value+center_g) for t in timespan]
-        c_limit = int((abs(min(timespan)) + slider_value) * (len(timespan) / timespan_range_len))
-        c_arr = np.copy(c_total)
-        c_arr[int(c_limit):] = np.nan
-        data = {
-            't': timespan,
-            'f': f_arr,
-            'g': g_arr,
-            'c': c_arr
-        }
-        return px.line(pd.DataFrame(data), x='t', y=['f', 'g', 'c'])
+    return dash_app.server
 
-    @dash_app.callback(
-        [
-            Output(component_id='conv_plot', component_property='figure'),
-            Output(component_id='time_slider', component_property='value'),
-        ],
-        [
-            Input(component_id='play_btn', component_property='n_clicks'),
-            Input(component_id='interval_component', component_property='n_intervals')
-        ],
-        [
-            State(component_id='time_slider', component_property='value'),
-        ]
+def signal_noise_dashboard(server):
+    """Create a Plotly Dash dashboard."""
+
+    fig = make_subplots(rows=1, cols=3, start_cell="bottom-left")
+
+    fig.add_trace(go.Scatter(x=timespan, y=signal),
+                  row=1, col=1)
+
+    fig.add_trace(go.Scatter(x=timespan, y=noise),
+                  row=1, col=2)
+
+    fig.add_trace(go.Scatter(x=timespan, y=noisy_signal),
+                  row=1, col=3)
+
+    fig.update_layout(showlegend=False,
+                      xaxis_title="",
+                      yaxis_title="",
+                      margin=dict(l=0, r=0, t=35, b=35))
+
+    dash_app = Dash(
+        server=server,
+        routes_pathname_prefix='/dashapp_noise/'
+        # external_stylesheets=['../static/css/dash_table.css']
     )
-    def update_plot(n_clicks, n_intervals, slider_value):
 
-        # play button pressed -> enter auto play mode
-        if n_clicks != 0 and not n_clicks % 2:
-            slider_value += 0.1
-            return update_graphs(slider_value), slider_value
-
-        # play button not pressed -> enter slider mode
-        else:
-            return update_graphs(slider_value), slider_value
+    # Create Dash Layout
+    dash_app.layout = html.Div([
+        html.Div([
+            dcc.Graph(id='signal_plot', figure=fig)
+        ]),
+    ],
+    style={'backgroundColor': '#ffffff'},
+    )
 
     return dash_app.server

@@ -19,11 +19,13 @@ def create_app():
 
         # Import Dash application
         # from dash.convolution import create_dashboard
-        from dashapps.convolution import signal_kernel_dashboard
-        from dashapps.convolution import convolution_dashboard
+        from dashapps.convolution import signal_noise_dashboard
+        from dashapps.convolution import hamming_convolution_dashboard
+        from dashapps.cross_correlation import cross_correlation_dashboard
 
-        convolution_dashboard(app)
-        signal_kernel_dashboard(app)
+        signal_noise_dashboard(app)
+        hamming_convolution_dashboard(app)
+        cross_correlation_dashboard(app)
 
         # Compile CSS
         # from application.assets import compile_assets
