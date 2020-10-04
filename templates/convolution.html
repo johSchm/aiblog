@@ -36,36 +36,41 @@
 
 				<h3>Problem Definition</h3>
 	      <p class=text>
-	        The first step to a profound understanding of
-	        <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a> (short ConvNets or CNNs)
-	        is to grasp what these networks have to do with <i> Convolutions </i>, and why they
-					actually havn't to do anything with it, e.g. in the majority of articles out there animations, showing
-					the supposedly workflow of convolution for images is actually showing cross-correlation.
-					This blog is aiming to outline both terms distinctively, such that you will not longer mix them up.
-					Further at the end, you will find a neat introduction to ConvNets.
-					Thrilled? Good, let's get started by buckle down on the term convolution.
+
+					The majority of novel image processing strategies
+					So <a href = "html/convnet.html" target = "_self"> Convolutional Neural Networks </a> (short ConvNets or CNNs)
+					use convolutional operations under the hood, right? Surprisingly, the answer is no at least for the majority of
+					CNN implementations. Nonetheless, many articles introduce ConvNets with the explaination of the convolutional
+					operation, leaving no word about cross-correlation. Cross-Correlation is a closely related concept, and hence
+					pretty similar to convolution, therefore understand one will inevitably lead to the understanding the other.
+					Nevertheless, I will add some clarity to these concepts and why cross-correlation
+					is the working horse of ConvNets rather than convolution.
+					This blog is aiming to outline both terms distinctively, such that you will no longer mix them up.
+					<!-- Further at the end, you will find a neat introduction to ConvNets.
+					Thrilled? Good, let's get started by buckle down on the term convolution. -->
 				</p>
 
 				<h3>Convolution</h3>
 				<p class=text>
-					When introducing terms like this one by beginning with the history and the inventer is a prevailing
-					startegy in many publications. This invention, however, is hard to pinpoint for the notion of
-					convolution, since the entire field of signal processing is reliant on this basic operation.
-					So this actually brings us to one important point for the difference between convolution and
-					cross-correltation, while signal processing is the main application for convolution, image processing,
+					By beginning with the history and the inventor is a prevailing
+					strategy in many publications when introducing basic terms like convolution.
+					The entire field of signal processing is reliant on this basic operation, so its
+					the importance is indisputable, however, the invention of convolution is hard to pinpoint in the course of history.
+					So this brings us to one important point for the difference between convolution and
+					cross-correlation, while signal processing is the main application for convolution, image processing,
 					as we will see later, is the main application for cross-correlation.
 				</p>
 				<br>
  				<p class=text>
 					As the name suggests, signal processing is the art of juggling with signals, which are mathematical
 					functions, that convey information. For example, you think of information as the amount of voltage at a
-					definite timestamp \( t \). Image a WiFi signal os transmitted from your router to your smartphone, which you
-					might already do, when reading this artical on your phone connected to our home WiFi. Now,
+					definite timestamp \( t \). Imagine a WiFi signal is transmitted from your router to your smartphone, which
+					might happen is this very moment when reading this article on your phone connected to our home wifi. Now,
 					your smartphone is in this case the receiver, and when you just compare the originally transmitted signal
-					and the signal received, you will unfortunately notice, that the received signal is subject
+					and the signal received, you will, unfortunately, notice, that the received signal is subject
 					to some kind of noise lying on top of the signal, modifying the broadcasted information slightly
-					(remember thats the time-dependet voltage level in this case). Even though, I used the word slightly here,
-					the impact is always relative, hence it depends on how fine-grainded the signal is,
+					(remember that's the time-dependent voltage level in this case). Even though, I used the word slightly here,
+					the impact is always relative, hence it depends on how fine-grained the signal is,
 					the quality of the underlying transmitter-receiver system, the distance, and more.
 					An example is depicted in Figure 1. One can imagine, that such
 					a conveyed signal needs some smoothing to be handled without loss of information or corruption of
@@ -84,15 +89,15 @@
 
 				<p class=text>
 					This can be tackled by the interconnection of a filter element after receiving a signal. With this we are
-					diving into the highly interesting topic of digital signal processing (DSP). This can be <i> inter alia </i>
-					be done by a convolutional filter element, this is mostly part of a digital signal processor (unfortunately, also
+					diving into the highly interesting topic of digital signal processing (DSP). This can
+					be done <i> inter alia </i> by a convolutional filter element, this is mostly part of a digital signal processor (unfortunately, also
 					often abbreviated by DSP). This signal smoothing can be achieved by a powerful magic weapon called
-					convolution. Its a mathematical operation, which merges two signals, in our case the noisy input signal
-					and a filter function, yielding a new signal, which constitues the modification of the original signal
-					by the filter. This is not done by a simple point-wise addition of signal and filter values at
-					each time step, instead for each time step the filter adds all signal values at this very time step
+					convolution. It's a mathematical operation, which merges two signals, in our case the noisy input signal
+					and a filter function, yielding a new signal, which constitutes the modification of the original signal
+					by the filter. This is not done by simple point-wise addition of signal and filter values at
+					each time step, instead of for each time step the filter adds all signal values at this very time step
 					and all previous steps, scaled by the filter value at the time step, together. Okay, this needs some math
-					to be looked into. Lets consider the <b>Discrete Convolution</b> first, which is perhaps easier to gasp at the moment.
+					to be looked into. Let's consider the <b>Discrete Convolution</b> first, which is perhaps easier to grasp at the moment.
 					Formally, this is defined as
 
 					$$ f[t] * g[t] = \sum_{k=-\infty}^{\infty} f[k] g[t-k],$$
@@ -100,8 +105,8 @@
 					where \( f[t] \) is our signal and \( g[t] \) is the filter (often also called kernel).
 					The  \( * \) symbol indicates convolution between the two functions (often also represented by a
 					\( \otimes \) or \( \bigstar \) ). Often the first questions are popping up regarding the \( n - k \) term.
-					This is the so called <b> Time Shift </b>. Image we have given the following discrete signal depicted in Fig. 1 (top).
-					If we now shift this signal to the right side, with other words move it along the time axis (like when time progresses),
+					This is the so-called <b> Time Shift </b>. Imagin we have given the following discrete signal depicted in Fig. 2 (top).
+					If we now shift this signal to the right side, in other words, move it along the time axis (like when time progresses),
 					we just take the signal value at time step \( t = 2 \) for example and assign this value to the next time step (\( t = 3 \) in this case).
 					Another way to think of it, is from the perspective of the shifted signal \( x[t-1] \): Each value is seized
 					from the original signal \( x[t] \) but one value but one value before the current time step \( t \), hence the minus one.
@@ -116,16 +121,17 @@
 				</figure>
 
 				<p class=text>
-					Let's have another peek into the discrete convolution formulation.
-					Intuitively, you can think of this process like moving the signal over the filter.
-					The filter is stays at its place and we iterate over each value  \( f[k] \).
+					<!-- Let's have another peek into the discrete convolution formulation. -->
+					Intuitively, you can think of this process as moving the signal over the filter.
+					The filter stays at its place and we iterate over each value  \( f[k] \).
 					The signal on the other hand is shifted by the value of  \( t \), since \( t \) is fixed and \( k \) is variable, we say that the function
 					is shifted by \( t \) not by \( k \). To introduce even more unfamiliarity, its value of \( k \) is negative, thus the signal
 					is reflected over the vertival line at \( t=0 \). So naturally you will ask: Why should we reverse the signal?
-					This comes from the most common use case of convolution, which is in the field of <b> Linear Time Invariant (LTI) Systems </b>.
-					These systems are a worth a article for themselfes, so lets put it as simple as possible: For now lets just say that they
-					produce a responce to an input signal. For example, when you hit a bell. The hit would look like a sudden peak, which is quickly
-					decreasing until slowly the value decreases. You now want to convolve the system function with this hit function, and since you
+					This comes from the most common use case of convolution, which is in the field of <b> Linear Time-Invariant (LTI) Systems </b>.
+					These systems are worth an article for themselves, so lets put it as simple as possible: For now, let's just say that they
+					produce a response to an input signal, like when you hit a bell. The hit would look like a sudden peak, which is quickly
+					decreasing until slowly the value approaches zero again.
+					You now want to convolve the system function with this hit function, and since you
 					want to start at the point where you hit the bell, you need to reverse the hit curve. If this does not matter for your application,
 					the reflection is in some sense arbitrary.
 					When we peek back to the formular once again, we see that the convolution is time-dependend, thus its a function, and we can
@@ -140,22 +146,22 @@
 
 					$$ (f * g)(t) \triangleq \int_{-\infty}^{+\infty} f(\tau) g(t - \tau) d \tau, $$
 
-					This is engaging from a theoretical standpoint, since in practice we descide for an appropriate computational accuracy
+					This is engaging from a theoretical standpoint since in practice we decide for an appropriate computational accuracy
 					and then approximate a continuous signal by discretizing it.
-					Returning to our noise example, we can now apply a filter via convolution to the noisy signal depicted in Figure 2
+					Returning to our noise example, we can now apply a filter via convolution to the noisy signal depicted in Figure 1
 					and hence smooth it to suppress the noise impact.
 					<!-- For this application a <b>Low-Pass Filter</b> is the most inuitive choise (Speaking about commen filters, this is,
 					again, worth an entire article on its own.).  -->
 				</p>
 				<br>
 				<p class=text>
-					For this purpose we need a appropriate filter, which smoothes the noisy signal. A proper choice would be the
-					<b>Hamming Filter</b>, which is depicted in Figure 3a. In this article we will not immerse into the field of
-					<b>Filter Design</b>, which is a extensive toptic on its own. Lets just say that the filter of choice is a
-					well-known filter to use for such purposes. Obviously, convolving the signal and filter in a straightforward
+					For this purpose, we need an appropriate filter to smooth the noisy signal. A proper choice would be the
+					<b>Hamming Filter</b>, which is depicted in Figure 3a. In this article, we will not immerse into the field of
+					<b>Filter Design</b>, which is an extensive topic on its own. Let's just say that the filter of choice is a
+					well-known filter to use for such purposes. Convolving the signal and filter in a straightforward
 					fashion wouldn't be much beneficial, since the filter would alter the shape of the signal completely. Whereas,
 					when we apply the filter only locally for small patches of the signal its shape will not alter the global
-					information of the signal, instead smooth region by region. The result is depicted in Fig. 3b.
+					information of the signal, instead of a smooth region by region. The result is depicted in Fig. 3b.
 				</p>
 
 				<iframe
@@ -211,9 +217,9 @@
 					<b>Multi-Dimentional (Discrete) Convolution</b>. Generically, we just loop over all dimensions,
 					such that for the 2D case the convolution is defined by
 
-					$$ f[w, h] ** g[w, h] = \sum_{i=-\infty}^{\infty} \sum_{j=-\infty}^{\infty} f[i, j] g[w-i, h-j], $$
+					$$ f[w, h] *_2 g[w, h] = \sum_{i=-\infty}^{\infty} \sum_{j=-\infty}^{\infty} f[i, j] g[w-i, h-j], $$
 
-					where \( ** \) denotes the 2D convolution. Indeed, by convention the number of asteriks is equals the
+					where \( *_2 \) denotes the 2D convolution. Indeed, by convention the number of asteriks is equals the
 					number of dimensions.
 					Our input is an image with width \( w \) and height \( h \).
 					Since an image is just a grid of pixels, the kernel
@@ -221,7 +227,7 @@
 					arrangement of pixels, where each pixel is a set of scalar values. In case of RGB
 					images each pixel has 3 values: one scalar value for Red, Green, and Blue.
 					The kernel is a 3 by 3 patch, where each element (small squares
-					in the in Figure 4) is just a scalar value of any value.
+					in Figure 4) is just a scalar value of any value.
 				</p>
 
 				<figure>
@@ -251,14 +257,14 @@
 				</figure>
 
 				<p class=text>
-						Since this is a high-definition image, let us rescale it to 256x256
-						pixels to cut down on computational cost and for the visual appearance
-						as you will see later. To further simplify this, lets only consider one
-						color channel. The original image follows a RGB color encoding, which
-						comprises a channel for the red (R), green (G), and blue (B) pixel values.
-						Reducing this to one color channel, means getting rid of the colors,
-						and render the image to a greyscale picture.
-						You can see the resulting image in Figure 4.
+					Since this is a high-definition image, let us rescale it to 256x256
+					pixels to cut down on computational cost and for the visual appearance
+					as you will see later. To further simplify this, lets only consider one
+					color channel. The original image follows a RGB color encoding, which
+					comprises a channel for the red (R), green (G), and blue (B) pixel values.
+					Reducing this to one color channel means getting rid of the colors,
+					and render the image to a greyscale picture.
+					You can see the resulting image in Figure 6.
 				</p>
 
 				<figure id=“twoimages”>
@@ -267,64 +273,64 @@
 				 <img src="static/figures/articles/convolution/raccoon_resized_grey.jpeg"
 				 alt="Raccoon Grey">
 				 <figcaption style="top: 0px">
-					 <b>Fig.5</b> (left) Image rescaled to 256x256x3 pixels,
+					 <b>Fig.6</b> (left) Image rescaled to 256x256x3 pixels,
 					 (right) Image as greyscale 256x256x1 pixels.
 				 </figcaption>
 				</figure>
 
 				<p class=text>
-						Fig. 6 lets you interactivelly play around with the kernel position
+						Fig. 7 lets you interactivelly play around with the kernel position
 						and the resulting convoled output pixel.
 				</p>
 
 				<figure>
 					<canvas id="input_canvas"></canvas>
 					<figcaption style="top: 0px">
-						<b>Fig.6</b> Interactive 2D image convolution.
+						<b>Fig.7</b> Interactive 2D image convolution.
 					</figcaption>
 				</figure>
 
 				<p class=text>
-						Okay, lets hit pause at this point and think about the implications here.
-						By changing the kernel, undoubtedly the output image would change, which
-						totally makes sense. What if we would stack multiple kernels on top of each other
-						and use the output of the first convolution as the input for the next one and so on.
-						This sequential procedure could be used to first detect minor features, like edges,
-						and further down the line more sophisticated ones, like eyes. In that way a
-						image classificator can be build, able to label images in certain way.
-						Designing the different kernels properly however would be an uphill battle,
-						due to the vast amount of possiblities. Alternatively, we could losen the
-						rigid kernel values and let a <b>Neural Network</b> learn them for us instead.
-						These networks are called <b>Convolutional Neural Network</b>.
-						In the <b>Machine Learning</b> commutity a neady gready discussion emerged in some forums
-						about why these networks are called <b>Convolutional Neural Network</b>, rather than
-						<b>Cross-Correlation Neural Network</b>. To participate, lets clarify the difference
-						between convolution and cross-correlation.
+					Okay, lets hit pause at this point and think about the implications here.
+					By changing the kernel, undoubtedly the output image would change, which
+					makes sense. What if we would stack multiple kernels on top of each other
+					and use the output of the first convolution as the input for the next one and so on.
+					This sequential procedure could be used to first detect minor features, like edges,
+					and further down the line more sophisticated ones, like eyes. In that way a
+					image classification can be build, able to label images in a certain way.
+					Designing the different kernels properly however would be an uphill battle,
+					due to the vast amount of possiblities. Alternatively, we could losen the
+					rigid kernel values and let a <b>Neural Network</b> learn them for us instead.
+					These networks are called <b>Convolutional Neural Network</b>.
+					In the <b>Machine Learning</b> commutity a neady gready discussion emerged in some forums
+					about why these networks are called <b>Convolutional Neural Network</b>, rather than
+					<b>Cross-Correlation Neural Network</b>. To participate, lets clarify the difference
+					between convolution and cross-correlation.
 				</p>
 
 				<h3>Cross-Correlation</h3>
 				<p class=text>
-						Cross-Correlation is pretty similar to convolution, the only difference is that
-						one don't need to flip the kernel. Formally speaking, this means
+					Cross-Correlation is pretty similar to convolution, the only difference is that
+					one doesn't need to flip the kernel. Formally speaking, this means
 
-						$$ corr(f[t], g[t]) = \sum_{k=-\infty}^{\infty} f[k] g[t+k], $$
+					$$ corr(f[t], g[t]) = \sum_{k=-\infty}^{\infty} f[k] g[t+k], $$
 
-						hence this implies the following relationship
+					hence this implies the following relationship
 
-						$$ corr(f[t], g[t]) = f[t] * g[-t].$$
+					$$ corr(f[t], g[t]) = f[t] * g[-t].$$
 
-						Hence, the kernel is simply slided over the signal, with this we can
-						quantify similarities between both functions. Indeed, in <b>Statistics</b>
-						cross-correlation is used to identity correlations between two functions
-						with one of which shifted in time. This directly leads to the presuming
-						question of why is this for any analytical interest? Assume you have given
-						you invest in a Startup and you invest into precise features. Since the features
-						need to be developed first, you will see the results delayed. Fig. 7a depicts
-						your investment and the purchases over time. Clearly, it is hard to spot any
-						correlation at first, but when you shift the curve back in time (see Fig. 7b),
-						you can actually spot the relationship at a glance. That is, the investment in
-						a new feature pushed the purchases nearly every time. Note, we assume equal
-						durations for all feature development phases.
+					Therefore, the kernel is simply slided over the signal, with this we can
+					quantify similarities between both functions. Indeed, in <b>Statistics</b>
+					cross-correlation is used to identity correlations between two functions
+					with one of which shifted in time. This directly leads to the presuming
+					question of why is this for any analytical interest? Assume you have given
+					you invest in a Startup and you invest into precise features. Since the features
+					need to be developed first, you will see the results delayed. Fig. 8a depicts
+					your investment and the purchases over time. Clearly, it is hard to spot any
+					correlation at first, but when you shift the curve back in time (see Fig. 7b),
+					you can actually spot the relationship at a glance. That is, the investment in
+					a new feature pushed the purchases nearly every time. Note, we assume equal
+					durations for all feature development phases.
 				</p>
 
 				<iframe
@@ -333,7 +339,7 @@
 				height="470px">
 				</iframe>
 				<figcaption style="top: -40px;">
-					<b>Fig.7</b> <i>(a)</i> The investments (blue) and the purchases (orange) and
+					<b>Fig.8</b> <i>(a)</i> The investments (blue) and the purchases (orange) and
 					<i>(b)</i> the shifted purchases back in time.
 				</figcaption>
 
@@ -343,8 +349,8 @@
 						continuous case) and hence the area under the combined curve, we will get the
 						cross-correlation curve. The maximum of this curve will be the point where both
 						signals correlate the most with each other, with other words the situation
-						shown in Fig. 7b. Thus we can infer that the result w.r.t. the purchases of each
-						investigated feature is delayed by this specific time value. 
+						shown in Fig. 8b. Thus we can infer that the result w.r.t. the purchases of each
+						investigated feature is delayed by this specific time value.
 				</p>
 
 				<h3>Conclusion</h3>
